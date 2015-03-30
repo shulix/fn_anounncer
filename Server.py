@@ -24,18 +24,17 @@ logger.setLevel(logging.INFO)
 
 announcement = 5
 bc_port = 50000
-listen_port=50001
-rpc_port=8000
+listen_port = 50001
+rpc_port = 8000
 MAGIC = "fn_announcer"
-my_ip= gethostbyname(gethostname()) #get our IP. Be careful if you have multiple network interfaces or IPs
-
+my_ip = gethostbyname(gethostname()) #get our IP. Be careful if you have multiple network interfaces or IPs
 
 roles_dic = dict()
-roles_dic.setdefault('hpi',[])
-roles_dic.setdefault('spm',[])
-roles_dic.setdefault('reports',[])
-roles_dic.setdefault('trmon',[])
-roles_dic.setdefault('trmof',[])
+roles_dic.setdefault('hpi', [])
+roles_dic.setdefault('spm', [])
+roles_dic.setdefault('reports' ,[])
+roles_dic.setdefault('trmon' ,[])
+roles_dic.setdefault('trmof' ,[])
 
 #Create socket
 s = socket(AF_INET, SOCK_DGRAM) #create UDP socket
@@ -51,7 +50,7 @@ class LoggingSimpleXMLRPCRequestHandler(SimpleXMLRPCServer.SimpleXMLRPCRequestHa
     def do_POST(self):
         clientIP, port = self.client_address
 	# Log client IP and Port
-        logger.info('Client IP: %s - Port: %s' % (clientIP, port))
+        logger.debug('Client IP: %s - Port: %s' % (clientIP, port))
         try:
             # get arguments
             data = self.rfile.read(int(self.headers["content-length"]))
@@ -79,13 +78,12 @@ class LoggingSimpleXMLRPCRequestHandler(SimpleXMLRPCServer.SimpleXMLRPCRequestHa
             self.connection.shutdown(1)
 
 class REMOTEMETHODS:
-    def hello(self, string):
+    def IsAlive(self, string):
         return "Hello %s" % string
 
 
 def pow():
     return "got RPC"
-
 
 def announcer():
     data = MAGIC+my_ip
